@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import java.util.*
@@ -25,13 +26,13 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
     private var animator = ValueAnimator.ofFloat(0f, 1f)
     var paint = Paint()
     var path = Path()
-    private val pathMeasure=PathMeasure()//路径，用于测量扩散圆某一处的X,Y值
-    private var pos=FloatArray(2) //扩散圆上某一点的x,y
+    private val pathMeasure = PathMeasure()//路径，用于测量扩散圆某一处的X,Y值
+    private var pos = FloatArray(2) //扩散圆上某一点的x,y
     private val tan = FloatArray(2)//扩散圆上某一点切线
-    private val random=Random()
-    private val particleNumber=1600//粒子数量
-    private val particleRadius=2.2f//粒子半径
-    private val diffusionRadius=268f//扩散圆半径
+    private val random = Random()
+    private val particleNumber = 1600//粒子数量
+    private val particleRadius = 2.2f//粒子半径
+    private val diffusionRadius = 268f//扩散圆半径
 
     init {
         animator.duration = 2000
@@ -46,25 +47,20 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
     }
 
     private fun updateParticle(fl: Float) {
-        particleList.forEachIndexed { index, ball ->
-            if (ball.offSet > ball.maxOffSet) {
-                ball.offSet = 0f
-                ball.speed = random.nextInt(3) + 1.5f
-                ball.maxOffSet = random.nextInt(250).toFloat()
+        particleList.forEachIndexed { index, particle ->
+            if (particle.offSet > particle.maxOffSet) {
+                particle.offSet = 0f
+                particle.speed = random.nextInt(3) + 1.5f
+                particle.maxOffSet = random.nextInt(250).toFloat()
             }
-            if (ball.x > mWidth / 2) {
-                ball.x =
-                    (cos(ball.angle) * (268f + ball.offSet) + mWidth / 2).toFloat() + ball.direction * ball.offSetX
+            particle.x = (mWidth / 2 - cos(Math.PI/2-particle.angle) * (diffusionRadius + particle.offSet)).toFloat()+particle.offSetX*particle.direction
+
+            if (particle.y > mHeight / 2) {
+                particle.y = (sin(Math.PI/2-particle.angle) * (diffusionRadius + particle.offSet) + mHeight / 2).toFloat()
             } else {
-                ball.x =
-                    (mWidth / 2 - cos(ball.angle) * (268f + ball.offSet)).toFloat() + ball.direction * ball.offSetX
+                particle.y = (mHeight / 2 - sin(Math.PI/2-particle.angle) * (diffusionRadius + particle.offSet)).toFloat()
             }
-            if (ball.y > mHeight / 2) {
-                ball.y = (sin(ball.angle) * (268f + ball.offSet) + mHeight / 2).toFloat()
-            } else {
-                ball.y = (mHeight / 2 - sin(ball.angle) * (268f + ball.offSet)).toFloat()
-            }
-            ball.offSet += ball.speed
+            particle.offSet += particle.speed
         }
     }
 
@@ -98,8 +94,8 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
             val randomX = random.nextInt(6) - 3f
             val randomY = random.nextInt(6) - 3f
             val offSetX = random.nextInt(3)
-            val direction = random.nextInt(3) - 1.5f
-            val angel = asin(((pos[0] - mWidth / 2) / 268f).toDouble())
+            val direction = random.nextInt(3)-1.5f
+            val angel = asin(((pos[0] - mWidth / 2) / diffusionRadius).toDouble())
             val maxOffSet = random.nextInt(250) + 0f
             particleList.add(
                 Particle(
