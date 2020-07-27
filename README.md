@@ -2,4 +2,4 @@
 
 和原作还有些出入，这是效果
 
-<img src="https://github.com/MlxChange/ParticleView/blob/master/img/cross.gif" style="zoom: 67%;" />
+<img src="https://github.com/MlxChange/ParticleView/blob/master/img/dimple.gif" style="zoom: 67%;" />
