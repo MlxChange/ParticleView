@@ -30,7 +30,7 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
     private var pos = FloatArray(2) //扩散圆上某一点的x,y
     private val tan = FloatArray(2)//扩散圆上某一点切线
     private val random = Random()
-    private val particleNumber = 1600//粒子数量
+    private val particleNumber = 2000//粒子数量
     private val particleRadius = 2.2f//粒子半径
     private val diffusionRadius = 268f//扩散圆半径
 
