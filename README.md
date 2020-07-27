@@ -2,4 +2,4 @@
 
 和原作还有些出入，这是效果
 
-![](https://github.com/MlxChange/ParticleView/blob/master/img/cross.gif)
+<img src="https://github.com/MlxChange/ParticleView/blob/master/img/cross.gif" style="zoom: 67%;" />
