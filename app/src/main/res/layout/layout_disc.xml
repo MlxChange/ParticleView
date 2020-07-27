@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/music_img"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ic_disc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/music_avatar"
+        app:layout_constraintTop_toTopOf="@id/music_img"
+        app:layout_constraintBottom_toBottomOf="@id/music_img"
+        app:layout_constraintLeft_toLeftOf="@id/music_img"
+        app:layout_constraintRight_toRightOf="@id/music_img"
+        android:layout_width="178dp"
+        android:layout_height="178dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
