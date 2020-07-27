@@ -2,4 +2,4 @@
 
 和原作还有些出入，这是效果
 
-![](E:\github\android\netEasy2\NetEasy\img\cross.gif)
+![](https://github.com/MlxChange/ParticleView/blob/master/img/cross.gif)
