@@ -22,7 +22,6 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.mlx.neteasy.R
 import com.mlx.neteasy.ViewPagerAdapter
-import com.mlx.neteasy.cutsomView.Ball
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlin.system.measureTimeMillis
 
@@ -35,55 +34,55 @@ class PlayView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
 
     private lateinit var viewpager: ViewPager
 
-    private lateinit var play:ImageView
+    private lateinit var play: ImageView
 
 
     var bgAnimator = ValueAnimator.ofInt(0, 225)
 
     var bgDrawable: LayerDrawable
-    var rotateAnimator :ObjectAnimator?=null
-    private var currentImg:ImageView?=null
-    private var isPlay=false
-    private var centerX=0f
-    private var centerY=0f
-    private var radius=0f
+    var rotateAnimator: ObjectAnimator? = null
+    private var currentImg: ImageView? = null
+    private var isPlay = false
+    private var centerX = 0f
+    private var centerY = 0f
+    private var radius = 0f
 
 
-    var moveAnimator=ValueAnimator.ofFloat(0f,1f)
-    var moveAlaph=0f
-    var moveLength=0f
+    var moveAnimator = ValueAnimator.ofFloat(0f, 1f)
+    var moveAlaph = 0f
+    var moveLength = 0f
 
     init {
         var drawable1 = context.getDrawable(R.drawable.ic_blackground)
         var drawables = arrayOf(drawable1, drawable1)
         bgDrawable = LayerDrawable(drawables)
         background = bgDrawable
-        bgAnimator.duration=1000
-        moveAnimator.duration=2000
-        moveAnimator.repeatCount=-1
-        moveAnimator.interpolator=LinearInterpolator()
+        bgAnimator.duration = 1000
+        moveAnimator.duration = 2000
+        moveAnimator.repeatCount = -1
+        moveAnimator.interpolator = LinearInterpolator()
         moveAnimator.addUpdateListener {
-            moveAlaph=225f*(1f-it.animatedValue as Float)
-            moveLength = it.animatedValue as Float *100
+            moveAlaph = 225f * (1f - it.animatedValue as Float)
+            moveLength = it.animatedValue as Float * 100
             invalidate()
         }
-        bgAnimator.interpolator=LinearInterpolator()
+        bgAnimator.interpolator = LinearInterpolator()
         bgAnimator.addUpdateListener {
             bgDrawable.getDrawable(1).alpha = it.animatedValue as Int
             background = bgDrawable
         }
         bgAnimator.doOnEnd {
-            bgDrawable.setDrawable(0,bgDrawable.getDrawable(1))
+            bgDrawable.setDrawable(0, bgDrawable.getDrawable(1))
         }
 
     }
 
 
     override fun onDraw(canvas: Canvas?) {
-        val time=measureTimeMillis {
+        val time = measureTimeMillis {
             super.onDraw(canvas)
         }
-        Log.i("zzz","time:$time")
+        Log.i("zzz", "time:$time")
 
     }
 
@@ -94,59 +93,53 @@ class PlayView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        viewpager=findViewById(R.id.vp)
+        viewpager = findViewById(R.id.vp)
 
-        play= findViewById(R.id.play)
-        play.setOnClickListener {it as ImageView
-            isPlay=!isPlay
+        play = findViewById(R.id.play)
+        play.setOnClickListener {
+            it as ImageView
+            isPlay = !isPlay
 
-            if (isPlay){
+            if (isPlay) {
                 //zhenAnimator?.reverse()
                 it.setImageResource(R.drawable.ic_pause)
                 rotateAnimator?.let {
-                    if (it.isPaused){
+                    if (it.isPaused) {
                         it.resume()
                         return@setOnClickListener
                     }
                 }
-                rotateAnimator=ObjectAnimator.ofFloat(currentImg,View.ROTATION,0f,360f)
-                rotateAnimator?.duration=6000
-                rotateAnimator?.repeatCount=-1
-                rotateAnimator?.interpolator=LinearInterpolator()
+                rotateAnimator = ObjectAnimator.ofFloat(currentImg, View.ROTATION, 0f, 360f)
+                rotateAnimator?.duration = 6000
+                rotateAnimator?.repeatCount = -1
+                rotateAnimator?.interpolator = LinearInterpolator()
                 rotateAnimator?.start()
                 moveAnimator.start()
-            }else{
+            } else {
                 //zhenAnimator?.start()
                 it.setImageResource(R.drawable.ic_play)
                 rotateAnimator?.pause()
             }
         }
 
-        viewpager.pivotX= (viewpager.left+viewpager.width/2).toFloat()
-        viewpager.pivotY= (viewpager.top+viewpager.height/2).toFloat()
+        viewpager.pivotX = (viewpager.left + viewpager.width / 2).toFloat()
+        viewpager.pivotY = (viewpager.top + viewpager.height / 2).toFloat()
 
         invalidate()
     }
 
-    fun setAdapter(adapter : ViewPagerAdapter){
-        viewpager.adapter=adapter
-        viewpager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+    fun setAdapter(adapter: ViewPagerAdapter) {
+        viewpager.adapter = adapter
+        viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(state: Int) {
-                if(state==SCROLL_STATE_DRAGGING){
-                    /*if (zhen.rotation==0f){
-                        zhenAnimator?.start()
-                    }*/
+                if (state == SCROLL_STATE_DRAGGING) {
                     rotateAnimator?.let {
-                        if (it.isRunning){
+                        if (it.isRunning) {
                             it.end()
                         }
                     }
                 }
-                if(state == SCROLL_STATE_SETTLING){
-
-                }
-
             }
 
             override fun onPageScrolled(
@@ -160,8 +153,8 @@ class PlayView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
             override fun onPageSelected(position: Int) {
                 val view =
                     adapter.Views[position].findViewById<ImageView>(R.id.music_avatar)
-                currentImg=view
-                isPlay=false
+                currentImg = view
+                isPlay = false
                 play.setImageResource(R.drawable.ic_play)
                 replaceBg(view.tag as Int)
 
@@ -170,22 +163,20 @@ class PlayView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
         })
         val view = viewpager[viewpager.currentItem]
         val img = view.findViewById<ImageView>(R.id.music_avatar)
-        currentImg=img
-        centerX= (viewpager.left+img.left+img.width/2).toFloat()
-        centerY= (viewpager.top+img.top+img.height/2).toFloat()
-        radius= (img.width/2).toFloat()
+        currentImg = img
+        centerX = (viewpager.left + img.left + img.width / 2).toFloat()
+        centerY = (viewpager.top + img.top + img.height / 2).toFloat()
+        radius = (img.width / 2).toFloat()
         replaceBg(img.tag as Int)
     }
 
 
-
-
-     fun replaceBg(res: Int) {
-        try{
+    fun replaceBg(res: Int) {
+        try {
             Glide.with(context)
                 .load(res)
-                .transform(BlurTransformation(10,25))
-                .into(object : SimpleTarget<Drawable>(){
+                .transform(BlurTransformation(10, 25))
+                .into(object : SimpleTarget<Drawable>() {
                     override fun onResourceReady(
                         resource: Drawable,
                         transition: Transition<in Drawable>?
@@ -195,8 +186,8 @@ class PlayView(context: Context, attrs: AttributeSet) : RelativeLayout(context, 
                     }
 
                 })
-        }catch (e:Exception){
-            Log.i("zzz","$e")
+        } catch (e: Exception) {
+            Log.i("zzz", "$e")
         }
     }
 
