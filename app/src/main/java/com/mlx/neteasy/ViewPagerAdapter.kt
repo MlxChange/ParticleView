@@ -8,7 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
  * Project:NetEasy
  * Created by MLX on 2020/7/25.
  */
-class ViewPagerAdapter() :PagerAdapter(){
+class ViewPagerAdapter :PagerAdapter(){
 
     var Views= mutableListOf<View>()
 
@@ -17,12 +17,7 @@ class ViewPagerAdapter() :PagerAdapter(){
     fun setData(datas: MutableList<View>){
         Views.clear()
         Views.addAll(datas)
-
         notifyDataSetChanged()
-    }
-
-    fun addRotate(item:Int){
-
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
