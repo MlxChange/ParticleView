@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import java.util.*
+import kotlin.math.acos
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sin
@@ -53,13 +54,14 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
                 particle.speed = random.nextInt(3) + 1.5f
                 particle.maxOffSet = random.nextInt(250).toFloat()
             }
-            particle.x = (mWidth / 2 - cos(Math.PI/2-particle.angle) * (diffusionRadius + particle.offSet)).toFloat()+particle.offSetX*particle.direction
+            particle.x = (mWidth / 2 + cos(particle.angle) * (diffusionRadius + particle.offSet)).toFloat()+particle.offSetX*particle.direction
 
             if (particle.y > mHeight / 2) {
-                particle.y = (sin(Math.PI/2-particle.angle) * (diffusionRadius + particle.offSet) + mHeight / 2).toFloat()
+                particle.y = (sin(particle.angle) * (diffusionRadius + particle.offSet) + mHeight / 2).toFloat()
             } else {
-                particle.y = (mHeight / 2 - sin(Math.PI/2-particle.angle) * (diffusionRadius + particle.offSet)).toFloat()
+                particle.y = (mHeight / 2 - sin(particle.angle) * (diffusionRadius + particle.offSet)).toFloat()
             }
+
             particle.offSet += particle.speed
         }
     }
@@ -87,7 +89,7 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
         mHeight = h.toFloat()
         path.addCircle(mWidth / 2, mHeight / 2, diffusionRadius, Path.Direction.CCW)
         pathMeasure.setPath(path, false)
-        for (i in 0..particleNumber) {
+        for (i in 0 .. particleNumber) {
             pathMeasure.getPosTan(i / particleNumber.toFloat() * pathMeasure.length, pos, tan)
             val offSet = random.nextInt(200)
             val speed = random.nextInt(2) + 0.5f
@@ -95,7 +97,7 @@ class DimPleView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
             val randomY = random.nextInt(6) - 3f
             val offSetX = random.nextInt(3)
             val direction = random.nextInt(3)-1.5f
-            val angel = asin(((pos[0] - mWidth / 2) / diffusionRadius).toDouble())
+            val angel = acos(((pos[0] - mWidth / 2) / diffusionRadius).toDouble())
             val maxOffSet = random.nextInt(250) + 0f
             particleList.add(
                 Particle(
